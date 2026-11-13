@@ -82,3 +82,28 @@ def HasRealSquareRoot (a : ℝ) : Prop :=
 
 example (a : ℝ) (h : HasRealSquareRoot a) :
     ∃ r : ℝ, r * r - a = 0 := by
+    unfold HasRealSquareRoot at h
+    obtain ⟨r,hr⟩ := h
+    use r
+    rw [hr]
+    exact sub_self a
+
+def HasSquareRootIn (K : Type*) [Field K] (a : K) : Prop :=
+  ∃ r : K, r^2 = a
+
+def OddDegreeRootProperty (K : Type*) [Field K] : Prop :=
+  ∀ f : Polynomial K, Odd f.natDegree -> ∃ a : K, f.IsRoot a
+
+example (K L : Type*) [Field K] [Field L] [Algebra K L]
+    (a : K) (h : HasSquareRootIn K a) :
+    HasSquareRootIn L (algebraMap K L a) := by
+  unfold HasSquareRootIn at h
+  obtain ⟨r,hr⟩ := h
+  unfold HasSquareRootIn
+  use algebraMap K L r
+  have hmap : algebraMap K L (r^2) = algebraMap K L a := by rw [hr]
+  have preserve :
+    algebraMap K L (r ^ 2) = (algebraMap K L r) ^ 2 := by
+    exact map_pow (algebraMap K L) r 2
+  rw [← preserve]
+  exact hmap
