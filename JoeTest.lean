@@ -19,3 +19,14 @@ example (P Q R : Prop) (hPQ : P → Q) (hQR : Q → R) :
     P → R := by
   intro hP
   exact hQR (hPQ hP)
+
+example (P : Prop) (a b : ℝ)
+    (h : (a + 1 = b + 1) → P) : a = b → P := by
+      intro equality
+      apply h
+      rw [equality]
+
+example : ∀ a b : ℝ, a = b → a + 1 = b + 1 := by
+  intro a b
+  intro j
+  rw [j]
