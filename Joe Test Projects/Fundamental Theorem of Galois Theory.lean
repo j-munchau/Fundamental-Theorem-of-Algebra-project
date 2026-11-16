@@ -8,6 +8,10 @@ This is a practice project -- in the actual formalisation, we will import the
 Fundamental Theorem of Galois Theory from Mathlib.
 -/
 
+-- Write p(x) for polynomial evaluation, with no space before the parenthesis.
+local macro:max p:term:max noWs "(" x:term ")" : term =>
+  `(Polynomial.eval $x $p)
+
 -- We write Fix(H) for the fixed field of H, and Aut(E) for Aut_E(L)
 local notation "Fix(" H ")" => IntermediateField.fixedField H
 local notation "Aut(" E ")" => IntermediateField.fixingSubgroup E
@@ -110,3 +114,29 @@ theorem joe_fixedField_triple (H : Subgroup (L ≃ₐ[K] L)) :
   have reverse : Fix(H) ≤ Fix(Aut(Fix(H))) := by
     exact joe_fix_of_aut Fix(H)
   exact le_antisymm inclusion reverse
+
+open scoped BigOperators
+
+-- Given a subgroup H of Aut_K(L), we define joeOrbitPolynomial as the
+-- polynomial in L[x] which is the product of the terms x-σ(x), where σ ranges
+-- over H
+noncomputable def joeOrbitPolynomial
+    (H : Subgroup (Gal(L/K))) [Fintype H] (a : L) : Polynomial L :=
+  ∏ σ : H, (Polynomial.X - Polynomial.C ((σ : Gal(L/K)) a))
+
+theorem joe_orbitPolynomial_eval_eq_zero_iff
+    (H : Subgroup (Gal(L/K))) [Fintype H] (a x : L) :
+    (joeOrbitPolynomial H a)(x) = 0 ↔ ∃ σ : H, x = (σ : Gal(L/K)) a := by
+  have h : (joeOrbitPolynomial H a)(x) = 0 ↔ ∃ σ : H, x-(σ : Gal(L/K)) a = 0 := by
+    unfold joeOrbitPolynomial
+    rw [Polynomial.eval_prod]
+    simp only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]
+    simp only [Finset.prod_eq_zero_iff, Finset.mem_univ, true_and]
+  rw [h]
+  simp [sub_eq_zero]
+
+theorem joe_orbitPolynomial_map
+    (H : Subgroup (Gal(L/K))) [Fintype H] (a : L) (ρ : H) :
+    (joeOrbitPolynomial H a).map (ρ : Gal(L/K)).toRingHom =
+      joeOrbitPolynomial H a := by
+  sorry
