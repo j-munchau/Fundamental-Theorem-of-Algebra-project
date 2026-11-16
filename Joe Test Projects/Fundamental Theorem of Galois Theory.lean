@@ -115,6 +115,21 @@ theorem joe_fixedField_triple (H : Subgroup (L ≃ₐ[K] L)) :
     exact joe_fix_of_aut Fix(H)
   exact le_antisymm inclusion reverse
 
+-- If σ:R->R is a ring homomorphism, then it extends uniquely to a ring
+-- homomorphism R[t]->R[t] mapping t to t
+
+
+-- Definition of the monoid homomorphism End_{Ring}(R) -> End_{Ring}(R[t])
+noncomputable def joePolynomialEndMap (R : Type*) [CommRing R] :
+    (R →+* R) →* (Polynomial R →+* Polynomial R) where
+  toFun := by
+    sorry
+  map_one' := by
+    sorry
+  map_mul' f g := by
+    sorry
+
+
 open scoped BigOperators
 
 -- Given a subgroup H of Aut_K(L), we define joeOrbitPolynomial as the
