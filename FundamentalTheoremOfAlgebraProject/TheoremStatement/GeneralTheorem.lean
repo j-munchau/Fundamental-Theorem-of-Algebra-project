@@ -1,4 +1,5 @@
 import FundamentalTheoremOfAlgebraProject.Imports
+import FundamentalTheoremOfAlgebraProject.TheoremStatement.OurRealClosedField
 
 /-!
 # GeneralTheorem
@@ -9,5 +10,12 @@ an element i∈C such that C=R(i) and i^2=-1. Then, C is an algebraic closure of
 R.
 -/
 
--- C/R is a field extension
+open scoped IntermediateField
+
+-- C/R is a field extension, and i∈C
 variable {R C : Type*} [Field R] [Field C] [Algebra R C]
+variable (i : C)
+
+theorem general (rc : ourRealClosedField R) (sq : i ^ 2 = -1)
+(gen : R⟮i⟯ = ⊤) : IsAlgClosure R C := by
+  sorry
