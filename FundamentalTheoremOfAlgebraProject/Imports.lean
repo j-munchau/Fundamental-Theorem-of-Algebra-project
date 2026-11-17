@@ -1,5 +1,6 @@
 import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.LinearAlgebra.Dimension.Finrank
+import Mathlib.GroupTheory.Sylow
 
 /-!
 # Imports

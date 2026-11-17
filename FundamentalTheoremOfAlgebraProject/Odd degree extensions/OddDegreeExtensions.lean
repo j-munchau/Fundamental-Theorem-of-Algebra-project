@@ -5,17 +5,15 @@ import FundamentalTheoremOfAlgebraProject.TheoremStatement.OurRealClosedField
 # OddDegreeExtensions
 
 We prove the following theorem. Suppose R is a real closed field, and K/R is a
-finite extension of odd degree. Then K has degree 1 over R. We write φ For the
-algebra map R->K.
+finite extension of odd degree. Then K has degree 1 over R. We write φ for the
+embedding R->K.
 -/
 
--- K/R is a field extension
 variable {R K : Type*} [Field R] [Field K] [Algebra R K]
 local notation "φ" => algebraMap R K
 
 open scoped IntermediateField
 
--- Odd degree extensions theorem
 theorem odd_degree_extension (rc : ourRealClosedField R) [FiniteDimensional R K]
     (hodd : Odd (Module.finrank R K)) : Module.finrank R K = 1 := by
   have bij : Function.Bijective φ → Module.finrank R K = 1 := by

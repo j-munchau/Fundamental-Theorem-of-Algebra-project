@@ -12,7 +12,6 @@ R.
 
 open scoped IntermediateField
 
--- C/R is a field extension, and i∈C
 variable {R C : Type*} [Field R] [Field C] [Algebra R C]
 variable (i : C)
 
