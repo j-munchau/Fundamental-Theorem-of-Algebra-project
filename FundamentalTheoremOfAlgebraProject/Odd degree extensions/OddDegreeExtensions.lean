@@ -5,7 +5,8 @@ import FundamentalTheoremOfAlgebraProject.TheoremStatement.OurRealClosedField
 # OddDegreeExtensions
 
 We prove the following theorem. Suppose R is a real closed field, and K/R is a
-finite extension of odd degree. Then K has degree 1 over R.
+finite extension of odd degree. Then K has degree 1 over R. We write φ For the
+algebra map R->K.
 -/
 
 -- K/R is a field extension
