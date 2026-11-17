@@ -5,8 +5,7 @@ import FundamentalTheoremOfAlgebraProject.TheoremStatement.OurRealClosedField
 # OddDegreeExtensions
 
 We prove the following theorem. Suppose R is a real closed field, and K/R is a
-finite extension of odd degree. Then the embedding R->K is an isomorphism. We
-denote the embedding R->K by φ.
+finite extension of odd degree. Then K has degree 1 over R.
 -/
 
 -- K/R is a field extension
@@ -17,11 +16,15 @@ open scoped IntermediateField
 
 -- Odd degree extensions theorem
 theorem odd_degree_extension (rc : ourRealClosedField R) [FiniteDimensional R K]
-    (hodd : Odd (Module.finrank R K)) : Function.Bijective φ := by
+    (hodd : Odd (Module.finrank R K)) : Module.finrank R K = 1 := by
+  have bij : Function.Bijective φ → Module.finrank R K = 1 := by
+    exact Module.finrank_of_bijective_algebraMap
+  apply bij
   constructor
   · exact (φ).injective
   · intro α
-    have degree_mul : (Module.finrank R K) = (Module.finrank R R⟮α⟯) * (Module.finrank R⟮α⟯ K) := by
+    have degree_mul : (Module.finrank R K) =
+        (Module.finrank R R⟮α⟯) * (Module.finrank R⟮α⟯ K) := by
       exact (Module.finrank_mul_finrank R R⟮α⟯ K).symm
     have divides : (Module.finrank R R⟮α⟯) ∣ (Module.finrank R K) := by
       use Module.finrank R⟮α⟯ K
