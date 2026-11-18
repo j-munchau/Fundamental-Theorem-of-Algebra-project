@@ -1,6 +1,7 @@
 import FundamentalTheoremOfAlgebraProject.Imports
 import FundamentalTheoremOfAlgebraProject.TheoremStatement.OurRealClosedField
 import FundamentalTheoremOfAlgebraProject.«Odd degree extensions».OddDegreeExtensions
+import FundamentalTheoremOfAlgebraProject.«Fundamental Theorem of Galois Theory».FundamentalTheoremOfGaloisTheory
 
 /-!
 # TheSylowArgument
@@ -28,5 +29,11 @@ theorem sylow_argument (rc : ourRealClosedField R) [FiniteDimensional R L]
   obtain ⟨P⟩ : Nonempty (Sylow 2 G) := two_subgroup
   let E : IntermediateField R L := IntermediateField.fixedField P.toSubgroup
   have fundamental : IntermediateField.fixingSubgroup E = P := by
-    sorry
+    exact (weak_fundamental_theorem P.toSubgroup).symm
+  have galois_again : IsGalois E L := by
+    infer_instance
+  have correct_autos_again : Nat.card P = Module.finrank E L := by
+    rw [← fundamental]
+    exact (Nat.card_congr (IntermediateField.fixingSubgroupEquiv E).toEquiv).trans
+      (IsGalois.card_aut_eq_finrank E L)
   sorry

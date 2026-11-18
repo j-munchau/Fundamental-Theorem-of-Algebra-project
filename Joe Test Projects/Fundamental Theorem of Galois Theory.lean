@@ -115,20 +115,34 @@ theorem joe_fixedField_triple (H : Subgroup (L ≃ₐ[K] L)) :
     exact joe_fix_of_aut Fix(H)
   exact le_antisymm inclusion reverse
 
--- If σ:R->R is a ring homomorphism, then it extends uniquely to a ring
--- homomorphism R[t]->R[t] mapping t to t
-
+-- The natural ring homomorphism R -> R[t], sending r to the constant polynomial r.
+noncomputable def joePolynomialC (R : Type*) [CommRing R] :
+    R →+* Polynomial R := Polynomial.C
 
 -- Definition of the monoid homomorphism End_{Ring}(R) -> End_{Ring}(R[t])
 noncomputable def joePolynomialEndMap (R : Type*) [CommRing R] :
     (R →+* R) →* (Polynomial R →+* Polynomial R) where
-  toFun := by
-    sorry
-  map_one' := by
-    sorry
-  map_mul' f g := by
-    sorry
+  toFun := Polynomial.mapRingHom
+  map_one' := Polynomial.mapRingHom_id
+  map_mul' f g := (Polynomial.mapRingHom_comp f g).symm
 
+-- The group homomorphism Aut_K(L) -> Aut_K(L[t]), acting on coefficients and fixing t.
+noncomputable def joePolynomialAutMap
+    (K L : Type*) [Field K] [Field L] [Algebra K L] :
+    (L ≃ₐ[K] L) →* (Polynomial L ≃ₐ[K] Polynomial L) where
+  toFun := Polynomial.mapAlgEquiv
+  map_one' := Polynomial.mapAlgEquiv_id
+  map_mul' σ τ := (Polynomial.mapAlgEquiv_comp L τ σ).symm
+
+-- Its underlying ring homomorphism agrees with joePolynomialEndMap.
+@[simp]
+theorem joePolynomialAutMap_toRingHom (σ : L ≃ₐ[K] L) :
+    (joePolynomialAutMap K L σ).toRingHom =
+      joePolynomialEndMap L σ.toRingHom := rfl
+
+@[simp]
+theorem joePolynomialAutMap_apply (σ : L ≃ₐ[K] L) (p : Polynomial L) :
+    joePolynomialAutMap K L σ p = p.map σ.toRingHom := rfl
 
 open scoped BigOperators
 

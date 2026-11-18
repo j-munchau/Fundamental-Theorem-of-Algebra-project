@@ -1,3 +1,7 @@
 {
-    "lean4.infoview.hideInstanceAssumptions": false
+    "lean4.infoview.hideInstanceAssumptions": false,
+    "[lean4]": {
+        "files.autoSave": "afterDelay",
+        "files.autoSaveDelay": 1000
+    }
 }
