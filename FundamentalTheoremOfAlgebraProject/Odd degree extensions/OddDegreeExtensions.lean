@@ -14,7 +14,7 @@ local notation "φ" => algebraMap R K
 
 open scoped IntermediateField
 
-theorem odd_degree_extension (rc : ourRealClosedField R) [FiniteDimensional R K]
+theorem odd_degree_extensions (rc : ourRealClosedField R) [FiniteDimensional R K]
     (hodd : Odd (Module.finrank R K)) : Module.finrank R K = 1 := by
   have bij : Function.Bijective φ → Module.finrank R K = 1 := by
     exact Module.finrank_of_bijective_algebraMap

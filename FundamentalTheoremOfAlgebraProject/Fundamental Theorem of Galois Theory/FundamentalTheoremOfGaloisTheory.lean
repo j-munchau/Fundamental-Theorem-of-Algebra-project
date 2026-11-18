@@ -188,7 +188,6 @@ lemma reduction (H : Subgroup G) [Fintype H] :
 -- The main theorem
 theorem weak_fundamental_theorem (H : Subgroup G) [Finite H] :
     H=Aut(Fix(H)) := by
-  -- The reduction needs an enumeration of the finite subgroup H.
   let : Fintype H := Fintype.ofFinite H
   ext
   constructor
