@@ -158,7 +158,26 @@ def subgroupSubset (H : Subgroup G) (τ : G) : Set L :=
 lemma union_subfields {ι} [Fintype ι] (S : ι → Set L) :
     (∀i:ι, ∃ K : Subfield L, (K : Set L) = S i) ∧ ⋃i:ι, S i = Set.univ
     → (∃i:ι, Set.univ = S i) := by
-  sorry
+  intro h
+  obtain ⟨hfields, hcover⟩ := h
+  choose F hF using hfields
+  cases finite_or_infinite L with
+  | inl h =>
+      let : Finite L := h
+      have cyclic : IsCyclic Lˣ := by
+         infer_instance
+      obtain ⟨x,hx⟩ := cyclic
+      have triv : (x:L) ∈ Set.univ := by
+        trivial
+      have in_union : (x:L) ∈ ⋃i:ι, S i := by
+        rw [← hcover] at triv
+      have in_Si : ∃i:ι, (x:L) ∈ S i := by
+        exact Set.mem_iUnion.mp in_union
+      obtain ⟨i,g⟩ := in_Si
+      sorry
+  | inr h =>
+      let : Infinite L := h
+      sorry
 
 -- To prove the main theorem, it suffices to show that for every τ∈Aut(Fix(H)),
 -- the field L is the union of the sets {σ=τ}, where σ ranges over H
