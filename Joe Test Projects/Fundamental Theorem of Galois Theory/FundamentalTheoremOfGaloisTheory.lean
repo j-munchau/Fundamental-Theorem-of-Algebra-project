@@ -171,10 +171,31 @@ lemma union_subfields {ι} [Fintype ι] (S : ι → Set L) :
         trivial
       have in_union : (x:L) ∈ ⋃i:ι, S i := by
         rw [← hcover] at triv
+        exact triv
       have in_Si : ∃i:ι, (x:L) ∈ S i := by
         exact Set.mem_iUnion.mp in_union
       obtain ⟨i,g⟩ := in_Si
-      sorry
+      have in_Fi : (x:L) ∈ F i := by
+        rw [← hF] at g
+        exact g
+      let xF : F i := ⟨(x : L), in_Fi⟩
+      have nonzero : xF≠0 := by
+        refine Subtype.coe_ne_coe.mp ?_
+        exact x.ne_zero
+      let y : (F i).toSubmonoid.units :=
+  ⟨x, in_Fi, by simpa using (F i).inv_mem in_Fi⟩
+      have hgen : Subgroup.zpowers x = ⊤ := by
+        apply (Subgroup.eq_top_iff' _).mpr
+        intro z
+        exact Subgroup.mem_zpowers_iff.mpr (hx z)
+      have hunits : (F i).toSubmonoid.units = ⊤ := by
+        apply top_le_iff.mp
+        rw [← hgen]
+        exact Subgroup.zpowers_le.mpr y.property
+      
+
+
+
   | inr h =>
       let : Infinite L := h
       sorry

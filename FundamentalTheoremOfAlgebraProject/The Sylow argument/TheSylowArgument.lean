@@ -1,7 +1,6 @@
 import FundamentalTheoremOfAlgebraProject.Imports
 import FundamentalTheoremOfAlgebraProject.TheoremStatement.OurRealClosedField
 import FundamentalTheoremOfAlgebraProject.«Odd degree extensions».OddDegreeExtensions
-import FundamentalTheoremOfAlgebraProject.«Fundamental Theorem of Galois Theory».FundamentalTheoremOfGaloisTheory
 
 /-!
 # TheSylowArgument
