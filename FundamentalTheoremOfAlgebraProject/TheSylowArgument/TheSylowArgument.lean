@@ -1,6 +1,6 @@
 import FundamentalTheoremOfAlgebraProject.Imports
 import FundamentalTheoremOfAlgebraProject.TheoremStatement.OurRealClosedField
-import FundamentalTheoremOfAlgebraProject.«Odd degree extensions».OddDegreeExtensions
+import FundamentalTheoremOfAlgebraProject.OddDegreeExtensions.OddDegreeExtensions
 
 /-!
 # TheSylowArgument

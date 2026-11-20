@@ -192,10 +192,7 @@ lemma union_subfields {ι} [Fintype ι] (S : ι → Set L) :
         apply top_le_iff.mp
         rw [← hgen]
         exact Subgroup.zpowers_le.mpr y.property
-      
-
-
-
+      sorry
   | inr h =>
       let : Infinite L := h
       sorry
