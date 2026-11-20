@@ -45,4 +45,17 @@ theorem sylow_argument (rc : ourRealClosedField R) [FiniteDimensional R L]
     rw [← fundamental]
     exact (Nat.card_congr (IntermediateField.fixingSubgroupEquiv E).toEquiv).trans
       (IsGalois.card_aut_eq_finrank E L)
-  sorry
+  have hm' : m=Module.finrank R E := by
+    calc
+      m = (2^n * m)/2^n := by simp
+      _ = (Module.finrank R L) / (Module.finrank E L) := by
+        rw [← hcard, correct_autos, ← hP, correct_autos_again]
+      _ = Module.finrank R E := by
+        exact Module.finrank_div_finrank_cancel_right_of_nontrivial R E L
+  have hm'' : m=1 := by
+    rw [hm']
+    exact odd_degree_extensions rc (by simpa only [hm'] using hm)
+  have hcard' : Nat.card G = 2^n := by
+    simpa [hm''] using hcard
+  rw [←correct_autos]
+  use n
