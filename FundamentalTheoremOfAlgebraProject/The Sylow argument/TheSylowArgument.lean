@@ -28,7 +28,7 @@ theorem sylow_argument (rc : ourRealClosedField R) [FiniteDimensional R L]
   obtain ⟨P⟩ : Nonempty (Sylow 2 G) := two_subgroup
   let E : IntermediateField R L := IntermediateField.fixedField P.toSubgroup
   have fundamental : IntermediateField.fixingSubgroup E = P := by
-    exact (weak_fundamental_theorem P.toSubgroup).symm
+    exact IntermediateField.fixingSubgroup_fixedField P.toSubgroup
   have galois_again : IsGalois E L := by
     infer_instance
   have correct_autos_again : Nat.card P = Module.finrank E L := by
