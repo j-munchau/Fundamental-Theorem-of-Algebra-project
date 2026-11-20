@@ -23,12 +23,22 @@ theorem sylow_argument (rc : ourRealClosedField R) [FiniteDimensional R L]
     [IsGalois R L] : ∃ n : ℕ, Module.finrank R L = 2^n := by
   have correct_autos : Nat.card G = Module.finrank R L :=
     IsGalois.card_aut_eq_finrank R L
-  have two_subgroup : Nonempty (Sylow 2 G) :=
-    Sylow.nonempty
-  obtain ⟨P⟩ : Nonempty (Sylow 2 G) := two_subgroup
-  let E : IntermediateField R L := IntermediateField.fixedField P.toSubgroup
+  have decomp : ∃n m : ℕ, ∃P : Subgroup G,
+      Odd m ∧ Nat.card G = 2^n*m  ∧ Nat.card P = 2^n := by
+    have nonzero : Nat.card G ≠ 0 := by
+      exact (Nat.card_pos (α := G)).ne'
+    have nm : ∃ n m : ℕ, Odd m ∧ Nat.card G = 2^n*m := by
+      exact Nat.exists_eq_two_pow_mul_odd nonzero
+    obtain ⟨n,m,h,h'⟩ := nm
+    have div : 2^n ∣ Nat.card G := by
+      exact Dvd.intro m (Eq.symm h')
+    have hP : ∃ P : Subgroup G, Nat.card P = 2^n := by
+      exact Sylow.exists_subgroup_card_pow_prime 2 div
+    tauto
+  obtain ⟨n, m, P, hm, hcard, hP⟩ := decomp
+  let E : IntermediateField R L := IntermediateField.fixedField P
   have fundamental : IntermediateField.fixingSubgroup E = P := by
-    exact IntermediateField.fixingSubgroup_fixedField P.toSubgroup
+    exact IntermediateField.fixingSubgroup_fixedField P
   have galois_again : IsGalois E L := by
     infer_instance
   have correct_autos_again : Nat.card P = Module.finrank E L := by
