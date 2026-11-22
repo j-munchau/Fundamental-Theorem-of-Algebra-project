@@ -1,5 +1,6 @@
 import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.LinearAlgebra.Dimension.Finrank
+import Mathlib.LinearAlgebra.Dimension.FreeAndStrongRankCondition
 import Mathlib.GroupTheory.Sylow
 
 /-!

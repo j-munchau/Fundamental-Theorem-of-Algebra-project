@@ -1,159 +1,193 @@
 \documentclass{article}
-\usepackage[english]{babel}
 
+% Language, fonts and typography
+\usepackage[british]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% Mathematics
 \usepackage{amsmath}
-\usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{amsthm}
-\usepackage{fullpage}
-\usepackage{hyperref}
-\usepackage{cleveref}
-\usepackage{xcolor}
-\usepackage{comment}
 
-\usepackage{dirtytalk}
+% Layout
+\usepackage{fullpage}
 \usepackage{parskip}
 \usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{needspace}
+
+% Lean code highlighting
+\usepackage{xcolor}
 \usepackage{soul}
 
-\setlength{\headsep}{10pt}
+% Cross-references: hyperref and cleveref are loaded last, in this order
+\usepackage{hyperref}
+\usepackage[capitalise,nameinlink]{cleveref}
 
-\newtheorem{definition}{Definition}
-\newtheorem{theorem}{Theorem}
-\newtheorem{proposition}{Proposition}
-\newtheorem{lemma}{Lemma}
-
-\DeclareMathOperator{\End}{End}
-\DeclareMathOperator{\id}{id}
-\DeclareMathOperator{\Gal}{Gal}
-
-
-\ExplSyntaxOn
-\tl_new:N \l_lean_split_tl
-\NewDocumentCommand{\lean}{m}{
-    \group_begin:
-    \ttfamily
-    \sethlcolor{gray!15}
-    \tl_clear:N \l_lean_split_tl
-    \str_map_inline:nn { #1 } {
-        \tl_put_right:Nn \l_lean_split_tl {
-            ##1 \soulomit{\hspace{0pt plus 0.1pt}}
-        }
-    }
-    \exp_args:No \hl { \l_lean_split_tl }
-    \group_end:
-}
-\ExplSyntaxOff
-
-\newcommand{\leanmath}[1]{%
-  \begingroup
-  \setlength{\fboxsep}{1pt}%
-  \colorbox{gray!15}{\texttt{#1}}%
-  \endgroup
+\hypersetup{
+  colorlinks=true,
+  allcolors=blue!50!black,
+  pdftitle={Outline of formalisation},
+  pdfauthor={Joe Lamond and Joshua Munchau},
 }
 
+% Page style
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{Outline of formalisation}
 \fancyhead[R]{Joe Lamond and Joshua Munchau}
 \fancyfoot[C]{\thepage}
 \setlength{\headheight}{14pt}
+\setlength{\headsep}{10pt}
+
+% Theorems. With parskip, the default amsthm style spaces a theorem like an ordinary
+% paragraph, so it does not stand out. These values (added to parskip's paragraph gap) give
+% about 14pt of white space on each side, matching the space before a proof.
+\newtheoremstyle{spacedplain}{6pt}{3pt}{\itshape}{}{\bfseries}{.}{.5em}{}
+\theoremstyle{spacedplain}
+\newtheorem{theorem}{Theorem}
+
+% Lean code.
+% \lean{...} typesets Lean code on a grey background. Lines may break after `.` and `_`, so
+% that long names such as Mathlib module paths can be split at natural points.
+% \leanmath{...} is for Lean code containing maths, e.g. \leanmath{$\top$}. It cannot be
+% split across lines.
+\colorlet{leanbg}{gray!15}
+
+\ExplSyntaxOn
+\tl_new:N \l_lean_split_tl
+\NewDocumentCommand{\lean}{m}
+  {
+    \group_begin:
+    \ttfamily
+    \sethlcolor{leanbg}
+    \tl_clear:N \l_lean_split_tl
+    \str_map_inline:nn {#1}
+      {
+        \tl_put_right:Nn \l_lean_split_tl {##1}
+        \str_if_in:nnT {._} {##1}
+          { \tl_put_right:Nn \l_lean_split_tl { \soulomit{\hspace{0pt plus 0.1pt}} } }
+      }
+    \exp_args:No \hl { \l_lean_split_tl }
+    \group_end:
+  }
+\ExplSyntaxOff
+
+\newcommand{\leanmath}[1]{%
+  \begingroup
+  \setlength{\fboxsep}{1pt}%
+  \colorbox{leanbg}{\texttt{#1}}%
+  \endgroup
+}
+
+% Ragged-right table column, filling the remaining width
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
 
 \begin{document}
+
 \section*{The project}
+
 The main theorem which we intend to formalise is the Fundamental Theorem of Algebra:
-\begin{theorem}\label{thm:C-alg-closure-R}
+\begin{theorem}\label{thm:fta}
 The field $\mathbb C$ is algebraically closed.
 \end{theorem}
 In fact, we will prove something slightly more general. By a \emph{real closed field}, we mean a field $R$ which is similar to $\mathbb R$ in the following sense:
-\begin{enumerate}
+\begin{enumerate}[label=(\arabic*)]
 \item Every polynomial over $R$ of odd degree has a root in $R$.
 \item There exists a total order $\le$ on $R$ such that $R$ is an ordered field under this ordering, and moreover, every positive element of $R$ is a square.
 \end{enumerate}
 It is possible to prove that (1) and (2) hold for $R=\mathbb R$, \emph{without} using the fact that $\mathbb C$ is algebraically closed. Indeed, both results can be deduced from the intermediate value theorem. Our general theorem is as follows:
-\begin{theorem}
-\label{generaltheorem}
-Suppose $R$ is a real closed field, and $C$ is an extension of $R$ for which there is an element $i\in C$ such that $i^2=-1$ and $C=R(i)$. Then, $C$ is an algebraic closure of $R$. 
+\begin{theorem}\label{thm:general}
+Suppose $R$ is a real closed field, and $C$ is an extension of $R$ for which there is an element $i\in C$ such that $i^2=-1$ and $C=R(i)$. Then, $C$ is an algebraic closure of $R$.
 \end{theorem}
 
-To prove \Cref{generaltheorem}, we will use a number of results from field theory and group theory, including the Fundamental Theorem of Galois Theory and the Sylow theorems. The argument which we will use is roughly the same as the one appearing in Chapter 6 of Lang's \emph{Algebra} (Revised Third Edition). Briefly, the proof runs as follows. To establish that $C$ is algebraically closed, it suffices to show that every finite extension of $C$ is trivial. We do this by establishing the following four facts:
-\begin{enumerate}
+To prove \cref{thm:general}, we will use a number of results from field theory and group theory, including the Fundamental Theorem of Galois Theory and the Sylow theorems. The argument which we will use is roughly the same as the one appearing in Chapter 6 of Lang's \emph{Algebra} (Revised Third Edition). Briefly, the proof runs as follows. To establish that $C$ is algebraically closed, it suffices to show that every finite extension of $C$ is trivial. We do this by establishing the following four facts:
+\begin{enumerate}[label=\textbf{Step \arabic*.}, leftmargin=*]
 \item $R$ has no nontrivial finite extensions of odd degree.
 \item $C$ has no quadratic extension.
 \item Every finite Galois extension of $R$ has degree a power of $2$. [This is the step that uses both the Fundamental Theorem of Galois Theory and the Sylow theorems.]
 \item Every finite Galois extension $E$ of $R$ such that $E\supseteq C$ satisfies $E=C$.
 \end{enumerate}
-Now, let $L/C$ be a finite extension. The extension $L/R$ is finite. By taking a normal closure, we obtain an extension $E/L$ such that $E/R$ is finite Galois. Now, $R\subseteq C\subseteq L\subseteq E$, hence $E\supseteq C$, so that $E=C$ by step 4. Consequently, $L=C$.
+Now, let $L/C$ be a finite extension. The extension $L/R$ is finite. By taking a normal closure, we obtain an extension $E/L$ such that $E/R$ is finite Galois. Now, $R\subseteq C\subseteq L\subseteq E$, hence $E\supseteq C$, so that $E=C$ by Step~4. Consequently, $L=C$.
 
-Once we have completed the proof of \Cref{generaltheorem}, depending on the length of the Lean file, we might include further results about real closed fields $R$. One such result might be that if $f\in R[x]$ is a monic irreducible polynomial, then either $f$ is linear, or $f$ has the form $(x-a)^2+b^2$ for some $a,b\in R$. It follows that every monic polynomial in $R[x]$ can be factorised into linear and quadratic terms of this form.
+Once we have completed the proof of \cref{thm:general}, depending on the length of the Lean file, we might include further results about real closed fields $R$. One such result might be that if $f\in R[x]$ is a monic irreducible polynomial, then either $f$ is linear, or $f$ has the form $(x-a)^2+b^2$ for some $a,b\in R$. It follows that every monic polynomial in $R[x]$ can be factorised into linear and quadratic terms of this form.
 
 \section*{Lean implementation}
+
 Our first step in the project is to write down the statements of the theorems which we intend to prove in Lean. We detail how we will do this below.
 
 Mathlib already provides a definition of a real closed field \lean{IsRealClosed R} that is equivalent to the one we gave. However, since we intend to formalise our proof using the definition we gave, we will introduce our definition in Lean.
 
-In Mathlib, a field extension of a field \(K\) is defined as a \(K\)-algebra \(L\) which is a field. This is represented by the typeclass \lean{Algebra K L}. Then \lean{algebraMap K L} will give us the field embedding \(\varphi:K\to L\). (Note that it is not assumed that \(K\) is literally a subfield of \(L\).) The intermediate fields \(E\) of \(L /K\) (i.e.\@ those satisfying \(\varphi(K)\subseteq E\subseteq L\)) are represented by elements of the type \lean{IntermediateField K L}. These intermediate fields are partially ordered by inclusion with the minimal element being \(\varphi(K)\) and maximal element \(L\) which can be referred to in Lean using \leanmath{\(\bot\)} and \leanmath{\(\top\)} respectively. 
+In Mathlib, a field extension of a field $K$ is defined as a $K$-algebra $L$ which is a field. This is represented by the typeclass \lean{Algebra K L}. Then \lean{algebraMap K L} will give us the field embedding $\varphi:K\to L$. (Note that it is not assumed that $K$ is literally a subfield of $L$.) The intermediate fields $E$ of $L/K$ (i.e.\@ those satisfying $\varphi(K)\subseteq E\subseteq L$) are represented by elements of the type \lean{IntermediateField K L}. These intermediate fields are partially ordered by inclusion with the minimal element being $\varphi(K)$ and maximal element $L$ which can be referred to in Lean using \leanmath{$\bot$} and \leanmath{$\top$} respectively.
 
-Mathlib provides \lean{IntermediateField.adjoin K S} for \(K(S)\) where \(S\subseteq L\). In particular, the assumption \(C=R(i)\) in \Cref{generaltheorem} can be expressed using \leanmath{IntermediateField.adjoin R (\{i\} : Set C) = \(\top\)}. The goal of \Cref{generaltheorem} will then be \lean{IsAlgClosure R C}. This will require us to prove that \lean{IsAlgClosed C} (\(C\) is algebraically closed) and \lean{Algebra.IsAlgebraic R C} (\(C\) is algebraic over \(R\)).
+Mathlib provides \lean{IntermediateField.adjoin K S} for $K(S)$ where $S\subseteq L$. In particular, the assumption $C=R(i)$ in \cref{thm:general} can be expressed using \leanmath{IntermediateField.adjoin R (\{i\} : Set C) = $\top$}. The goal of \cref{thm:general} will then be \lean{IsAlgClosure R C}. This will require us to prove that \lean{IsAlgClosed C} ($C$ is algebraically closed) and \lean{Algebra.IsAlgebraic R C} ($C$ is algebraic over $R$).
 
-The statement of \Cref{thm:C-alg-closure-R} in Lean we will use is \leanmath{IsAlgClosed \(\mathbb{C}\)}. This is already established in Mathlib by \lean{Complex.isAlgClosed}, which uses Liouville's Theorem in Complex Analysis. Our proof will instead use Galois Theory. Mathlib already establishes that \(\mathbb{R}\) is a real closed field in \lean{instIsRealClosedReal} under their definition, and the theorems \lean{IsRealClosed.nonneg_iff_isSquare} and \lean{IsRealClosed.exists_isRoot_of_odd_natDegree} will allow us to conclude that \(\mathbb{R}\) satisfies our definition. The instance \lean{Complex.instAlgebraOfReal} establishes the algebra structure \leanmath{Algebra \(\mathbb{R}\) \(\mathbb{C}\)}. Mathlib also defines \lean{Complex.I} (\(i\in \mathbb{C}\)) with a theorem \lean{Complex.I_sq} that states \(i^2=-1\). Then we apply the theorem \lean{Complex.adjoin_I} which states \(\mathbb{C}=\mathbb{R}[i]\) (to obtain \(\mathbb{C}=\mathbb{R}(i)\), we can apply \lean{IntermediateField.adjoin_eq_top_of_algebra}).
+The Lean statement of \cref{thm:fta} that we will use is \leanmath{IsAlgClosed $\mathbb{C}$}. This is already established in Mathlib by \lean{Complex.isAlgClosed}, which uses Liouville's Theorem in Complex Analysis. Our proof will instead use Galois Theory. Mathlib already establishes that $\mathbb{R}$ is a real closed field in \lean{instIsRealClosedReal} under their definition, and the theorems \lean{IsRealClosed.nonneg_iff_isSquare} and \lean{IsRealClosed.exists_isRoot_of_odd_natDegree} will allow us to conclude that $\mathbb{R}$ satisfies our definition. The instance \lean{Complex.instAlgebraOfReal} establishes the algebra structure \leanmath{Algebra $\mathbb{R}$ $\mathbb{C}$}. Mathlib also defines \lean{Complex.I} ($i\in \mathbb{C}$) with a theorem \lean{Complex.I_sq} that states $i^2=-1$. Then we apply the theorem \lean{Complex.adjoin_I} which states $\mathbb{C}=\mathbb{R}[i]$ (to obtain $\mathbb{C}=\mathbb{R}(i)$, we can apply \lean{IntermediateField.adjoin_eq_top_of_algebra}).
 
-Construction files: \lean{Mathlib.FieldTheory.IsRealClosed.Real}, \lean{Mathlib.FieldTheory.IsAlgClosed.Basic}, \lean{Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra},  \lean{Mathlib.LinearAlgebra.Complex.Module} for the statement of \Cref{generaltheorem} and statement and proof of \Cref{thm:C-alg-closure-R}.
+\textbf{Construction files} (for the statement of \cref{thm:general}, and the statement and proof of \cref{thm:fta}):
+\begin{itemize}[nosep]
+\item \lean{Mathlib.FieldTheory.IsRealClosed.Real}
+\item \lean{Mathlib.FieldTheory.IsAlgClosed.Basic}
+\item \lean{Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra}
+\item \lean{Mathlib.LinearAlgebra.Complex.Module}
+\end{itemize}
 
-For the proof of \Cref{generaltheorem}, we intend to formalise each of the four facts as separate lemmas. To establish that \(C\) has no quadratic extension, we intend to prove it for the model \(R[X]/(X^2+1)\) (which we can construct in Mathlib using \lean{AdjoinRoot}) and then construct an \(R\)-algebra isomorphism from our model to \(C\). For the remaining steps, we intend to use mathlib's existing results on the Fundamental Theorem of Galois Theory and Sylow subgroups.
+For the proof of \cref{thm:general}, we intend to formalise each of the four facts as separate lemmas. To establish that $C$ has no quadratic extension, we intend to prove it for the model $R[X]/(X^2+1)$ (which we can construct in Mathlib using \lean{AdjoinRoot}) and then construct an $R$-algebra isomorphism from our model to $C$. For the remaining steps, we intend to use Mathlib's existing results on the Fundamental Theorem of Galois Theory and Sylow subgroups.
 
-Proof files:
-\lean{Mathlib.GroupTheory.Sylow},
-\lean{Mathlib.RingTheory.AdjoinRoot},
-\lean{Mathlib.RingTheory.IsAdjoinRoot},
-\lean{Mathlib.FieldTheory.Galois.Basic},
-\lean{Mathlib.FieldTheory.Normal.Closure}. 
+\textbf{Proof files} (for the proof of \cref{thm:general}):
+\begin{itemize}[nosep]
+\item \lean{Mathlib.GroupTheory.Sylow}
+\item \lean{Mathlib.RingTheory.AdjoinRoot}
+\item \lean{Mathlib.RingTheory.IsAdjoinRoot}
+\item \lean{Mathlib.FieldTheory.Galois.Basic}
+\item \lean{Mathlib.FieldTheory.Normal.Closure}
+\end{itemize}
 
-Depending on the difficulty of the formalisation of both the statement and proof, we may assume less from mathlib and give some of the constructions and proofs we assume ourselves.
+Depending on the difficulty of the formalisation of both the statement and proof, we may assume less from Mathlib and give some of the constructions and proofs we assume ourselves.
 
-\section*{Division of Labour}
+% The table cannot break across pages, so keep the heading and introduction with it.
+\needspace{24\baselineskip}
+\section*{Division of labour}
 
 Lastly, let us discuss how we intend to divide up the formalisation effort. Our provisional workflow is as follows. Once we have agreed on and entered the hypotheses and statements of the shared lemmas into Lean, we will work separately on the following tasks:
-\begin{center}
-\small
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{p{0.46\textwidth}|p{0.46\textwidth}}
-\textbf{Joe} & \textbf{Joshua} \\
-\hline
 
+{\small
+\begin{tabularx}{\textwidth}{@{}L@{\hspace{2em}}L@{}}
+\toprule
+\textbf{Joe} & \textbf{Joshua} \\
+\midrule
 \textbf{Odd-degree extensions.}
-Prove that every finite extension of $R$ of odd degree is
-trivial. [Step 1 of the proof sketch.]
+Prove that every finite extension of $R$ of odd degree is trivial. [Step 1 of the proof sketch.]
 &
 \textbf{Elementary results.}
 Prove that $x^2+1$ is irreducible over $R$. Show that every element of $C$ can be expressed as $a+bi$ for some unique $a,b\in R$. Prove $[C:R]=2$.
-\\
-
+\\ \addlinespace
 \textbf{The Sylow argument.}
-Prove that every finite Galois extension of $R$ has degree a power
-of $2$. [Step 3 of the proof sketch.]
+Prove that every finite Galois extension of $R$ has degree a power of $2$. [Step 3 of the proof sketch.]
 &
 \textbf{Square roots in $C$.}
 Prove that every element of $C$ is a square.
-\\
-
+\\ \addlinespace
 \textbf{The Galois extension argument.}
 Prove that every finite Galois extension of $R$ containing $C$ equals $C$. [Step 4 of the proof sketch.]
 &
 \textbf{Quadratic extensions of $C$.}
 Prove that $C$ has no quadratic extension. [Step 2 of the proof sketch.]
-\\
-
+\\ \addlinespace
 \textbf{The final step.}
 Conclude that every finite extension of $C$ is trivial, and use this to prove that $C$ is an algebraic closure of $R$.
-
 &
 \textbf{Specialisation.}
-Specialise \Cref{generaltheorem} to $R=\mathbb R$ and $C=\mathbb C$, being careful not to use any results from Mathlib which rely upon the Fundamental Theorem of Algebra.
+Specialise \cref{thm:general} to $R=\mathbb R$ and $C=\mathbb C$, being careful not to use any results from Mathlib which rely upon the Fundamental Theorem of Algebra.
 \\
+\bottomrule
+\end{tabularx}\par
+}
 
-\end{tabular}
-\end{center}
 The work has been divided so that, as much as possible, we can work independently of each other. For example, none of the first three tasks that Joshua has to complete uses anything proved by Joe.
 
 \end{document}
