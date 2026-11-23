@@ -1,4 +1,7 @@
 import FundamentalTheoremOfAlgebraProject.Imports
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Real.Sqrt
+import Mathlib.FieldTheory.IsRealClosed.Real
 
 /-!
 # OurRealClosedField
@@ -23,7 +26,7 @@ def oddDegreeRootProperty (R : Type*) [Field R] : Prop :=
 def orderingProperty (R : Type*) [Field R] : Prop :=
   ∃ (_ : LinearOrder R), IsStrictOrderedRing R ∧ ∀ x : R, 0 ≤ x -> IsSquare x
 
--- Our definition of real closed field
+-- Our definition of a real closed field
 def ourRealClosedField (R : Type*) [Field R] : Prop :=
   oddDegreeRootProperty R ∧ orderingProperty R
 
@@ -31,3 +34,12 @@ class OurRealClosedField (R : Type*) extends Field R, LinearOrder R, IsStrictOrd
   oddDegreeRoot : ∀ p : R[X], Odd p.natDegree -> ∃ a : R, p.IsRoot a
   nonNegSquare : ∀ x : R, 0 ≤ x -> IsSquare x
 
+-- The reals are an instance of our definition of a real closed field
+noncomputable instance : OurRealClosedField ℝ where
+  oddDegreeRoot := by
+    intro p hp
+    exact IsRealClosed.exists_isRoot_of_odd_natDegree hp
+  nonNegSquare := by
+    intro x hx
+    unfold IsSquare
+    exact ⟨√x, (Real.mul_self_sqrt hx).symm⟩
