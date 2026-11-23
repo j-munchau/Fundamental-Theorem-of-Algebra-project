@@ -13,9 +13,11 @@ equivalent to our one, but we intend to mainly use our own definition in the
 proof.
 -/
 
+open Polynomial
+
 -- Condition (i)
 def oddDegreeRootProperty (R : Type*) [Field R] : Prop :=
-  ∀ p : Polynomial R, Odd p.natDegree -> ∃ a : R, p.IsRoot a
+  ∀ p : R[X], Odd p.natDegree -> ∃ a : R, p.IsRoot a
 
 -- Condition (ii)
 def orderingProperty (R : Type*) [Field R] : Prop :=
