@@ -26,3 +26,8 @@ def orderingProperty (R : Type*) [Field R] : Prop :=
 -- Our definition of real closed field
 def ourRealClosedField (R : Type*) [Field R] : Prop :=
   oddDegreeRootProperty R ∧ orderingProperty R
+
+class OurRealClosedField (R : Type*) extends Field R, LinearOrder R, IsStrictOrderedRing R where
+  oddDegreeRoot : ∀ p : R[X], Odd p.natDegree -> ∃ a : R, p.IsRoot a
+  nonNegSquare : ∀ x : R, 0 ≤ x -> IsSquare x
+
