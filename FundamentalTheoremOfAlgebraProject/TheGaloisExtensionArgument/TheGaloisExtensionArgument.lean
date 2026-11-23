@@ -49,7 +49,8 @@ lemma no_quadratic_extension (rc : ourRealClosedField R) (sq : i^2=-1)
 lemma group_lemma (G : Type*) [Group G] [Finite G] (p : ℕ) (hp : Nat.Prime p)
     (s : ℕ) (hG : Nat.card G = p^s) (t : ℕ) (ht : t ≤ s) :
     ∃ K : Subgroup G, Nat.card K = p^t := by
-  sorry
+  have : Fact p.Prime := ⟨hp⟩
+  exact Sylow.exists_subgroup_card_pow_prime p (hG ▸ pow_dvd_pow p ht)
 
 lemma trivial_degree (rc : ourRealClosedField R) (sq : i^2=-1)
     (gen : R⟮i⟯ = ⊤) [FiniteDimensional R L] [IsGalois R L] :
@@ -59,15 +60,19 @@ lemma trivial_degree (rc : ourRealClosedField R) (sq : i^2=-1)
   obtain ⟨m,hm⟩ := pow_two
   have galois : IsGalois C L := IsGalois.tower_top_of_isGalois R C L
   have findim : FiniteDimensional C L := FiniteDimensional.right R C L
+  have order : Nat.card H = 2^m := by
+    rw [IsGalois.card_aut_eq_finrank, hm]
   have h0 : m=0 := by
     by_contra h
-    have sub : ∃K : Subgroup H, K.index = 2 := by
-      sorry
+    have sub : ∃K : Subgroup H, Nat.card  K = 2^(m-1) :=
+      group_lemma H 2 (Nat.prime_two) m order (m-1) (Nat.sub_le m 1)
     obtain ⟨K,hK⟩ := sub
     let F : IntermediateField C L := IntermediateField.fixedField K
     have deg_two : Module.finrank C F = 2 := by
       rw [IntermediateField.finrank_eq_fixingSubgroup_index,
       IntermediateField.fixingSubgroup_fixedField K, hK]
+
+      
     exact no_quadratic_extension R C L i rc sq gen F deg_two
   rw [hm, h0, pow_zero]
 
