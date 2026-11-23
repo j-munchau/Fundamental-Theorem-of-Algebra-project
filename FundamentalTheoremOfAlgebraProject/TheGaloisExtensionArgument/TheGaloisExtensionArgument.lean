@@ -68,11 +68,17 @@ lemma trivial_degree (rc : ourRealClosedField R) (sq : i^2=-1)
       group_lemma H 2 (Nat.prime_two) m order (m-1) (Nat.sub_le m 1)
     obtain ⟨K,hK⟩ := sub
     let F : IntermediateField C L := IntermediateField.fixedField K
+    have deg : Module.finrank F L = 2^(m-1) := by
+      calc
+        Module.finrank F L = Nat.card K :=
+        IntermediateField.finrank_fixedField_eq_card K
+        _ = 2^(m-1) := hK
     have deg_two : Module.finrank C F = 2 := by
-      rw [IntermediateField.finrank_eq_fixingSubgroup_index,
-      IntermediateField.fixingSubgroup_fixedField K, hK]
-
-      
+      calc
+        Module.finrank C F = (Module.finrank C L)/(Module.finrank F L) :=
+        by rw [← Module.finrank_mul_finrank C F L, Nat.mul_div_cancel _ Module.finrank_pos]
+        _ = (2^m)/(2^(m-1)) := by rw [hm, deg]
+        _ = 2 := by rw [Nat.pow_div (Nat.sub_le m 1) two_pos, Nat.sub_sub_self (Nat.one_le_iff_ne_zero.mpr h), pow_one]
     exact no_quadratic_extension R C L i rc sq gen F deg_two
   rw [hm, h0, pow_zero]
 
