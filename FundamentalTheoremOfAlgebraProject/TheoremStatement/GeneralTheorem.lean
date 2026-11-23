@@ -15,6 +15,6 @@ open scoped IntermediateField
 variable {R C : Type*} [Field R] [Field C] [Algebra R C]
 variable (i : C)
 
-theorem general (rc : ourRealClosedField R) (sq : i ^ 2 = -1)
+theorem general [OurRealClosedField R] (sq : i ^ 2 = -1)
 (gen : R⟮i⟯ = ⊤) : IsAlgClosure R C := by
   sorry

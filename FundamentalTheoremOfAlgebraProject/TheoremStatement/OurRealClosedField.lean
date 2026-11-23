@@ -1,7 +1,4 @@
 import FundamentalTheoremOfAlgebraProject.Imports
-import Mathlib.Basic.Real.Basic
-import Mathlib.Data.Real.Sqrt
-import Mathlib.FieldTheory.IsRealClosed.Real
 
 /-!
 # OurRealClosedField
@@ -18,28 +15,17 @@ proof.
 
 open Polynomial
 
--- Condition (i)
-def oddDegreeRootProperty (R : Type*) [Field R] : Prop :=
-  ∀ p : R[X], Odd p.natDegree -> ∃ a : R, p.IsRoot a
-
--- Condition (ii)
-def orderingProperty (R : Type*) [Field R] : Prop :=
-  ∃ (_ : LinearOrder R), IsStrictOrderedRing R ∧ ∀ x : R, 0 ≤ x -> IsSquare x
-
--- Our definition of a real closed field
-def ourRealClosedField (R : Type*) [Field R] : Prop :=
-  oddDegreeRootProperty R ∧ orderingProperty R
-
-class OurRealClosedField (R : Type*) extends Field R, LinearOrder R, IsStrictOrderedRing R where
+class OurRealClosedField (R : Type*) [Field R] : Prop where
   oddDegreeRoot : ∀ p : R[X], Odd p.natDegree -> ∃ a : R, p.IsRoot a
-  nonNegSquare : ∀ x : R, 0 ≤ x -> IsSquare x
+  nonNegSquare : ∃ (_ : LinearOrder R),
+  IsStrictOrderedRing R ∧ ∀ x : R, 0 ≤ x -> IsSquare x
 
 -- The reals are an instance of our definition of a real closed field
-noncomputable instance : OurRealClosedField ℝ where
-  oddDegreeRoot := by
-    intro p hp
-    exact IsRealClosed.exists_isRoot_of_odd_natDegree hp
+instance : OurRealClosedField ℝ where
+  oddDegreeRoot _ hp := IsRealClosed.exists_isRoot_of_odd_natDegree hp
   nonNegSquare := by
-    intro x hx
-    unfold IsSquare
-    exact ⟨√x, (Real.mul_self_sqrt hx).symm⟩
+    use inferInstance
+    constructor
+    · infer_instance
+    · intro x hx
+      exact ⟨√x, (Real.mul_self_sqrt hx).symm⟩

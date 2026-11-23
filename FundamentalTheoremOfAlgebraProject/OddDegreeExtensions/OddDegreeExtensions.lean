@@ -14,7 +14,7 @@ local notation "φ" => algebraMap R K
 
 open scoped IntermediateField
 
-theorem odd_degree_extensions (rc : ourRealClosedField R) [FiniteDimensional R K]
+theorem odd_degree_extensions [OurRealClosedField R] [FiniteDimensional R K]
     (hodd : Odd (Module.finrank R K)) : Module.finrank R K = 1 := by
   have bij : Function.Bijective φ → Module.finrank R K = 1 := by
     exact Module.finrank_of_bijective_algebraMap
@@ -34,11 +34,7 @@ theorem odd_degree_extensions (rc : ourRealClosedField R) [FiniteDimensional R K
       rw [← IntermediateField.adjoin.finrank hα]
       exact odd_degree
     have minpoly_root : ∃ c : R, (minpoly R α).IsRoot c := by
-      have rootProperty : oddDegreeRootProperty R := by
-        exact rc.left
-      unfold oddDegreeRootProperty at rootProperty
-      apply rootProperty
-      exact odd_minpoly_degree
+      exact OurRealClosedField.oddDegreeRoot (minpoly R α) odd_minpoly_degree
     obtain ⟨c, hc⟩ := minpoly_root
     have hα : IsIntegral R α := Algebra.IsIntegral.isIntegral α
     exact ⟨c, minpoly.root hα hc⟩

@@ -29,19 +29,19 @@ lemma finite_galois [FiniteDimensional R L] [IsGalois R L] :
     FiniteDimensional C L ∧ IsGalois C L :=
   ⟨FiniteDimensional.right R C L, IsGalois.tower_top_of_isGalois R C L⟩
 
-lemma deg_pow_two (rc : ourRealClosedField R)
+lemma deg_pow_two [OurRealClosedField R]
     [FiniteDimensional R L] [IsGalois R L] :
     ∃m : ℕ, Module.finrank C L = 2^m := by
   have div : Module.finrank C L ∣ Module.finrank R L :=
     Module.finrank_dvd_finrank_left R C L
   have pow : ∃n:ℕ, Module.finrank R L = 2^n :=
-    sylow_argument rc
+    sylow_argument
   obtain ⟨n, hn⟩ := pow
   rw [hn] at div
   obtain ⟨m, -, hm⟩ := (Nat.dvd_prime_pow Nat.prime_two).mp div
   exact ⟨m, hm⟩
 
-lemma no_quadratic_extension (rc : ourRealClosedField R) (sq : i^2=-1)
+lemma no_quadratic_extension [OurRealClosedField R] (sq : i^2=-1)
     (gen : R⟮i⟯ = ⊤) [FiniteDimensional R L] [IsGalois R L] :
     ∀ E : IntermediateField C L , Module.finrank C E ≠ 2 := by
   sorry
@@ -52,11 +52,11 @@ lemma group_lemma (G : Type*) [Group G] [Finite G] (p : ℕ) (hp : Nat.Prime p)
   have : Fact p.Prime := ⟨hp⟩
   exact Sylow.exists_subgroup_card_pow_prime p (hG ▸ pow_dvd_pow p ht)
 
-lemma trivial_degree (rc : ourRealClosedField R) (sq : i^2=-1)
+lemma trivial_degree [OurRealClosedField R] (sq : i^2=-1)
     (gen : R⟮i⟯ = ⊤) [FiniteDimensional R L] [IsGalois R L] :
     Module.finrank C L = 1 := by
   have pow_two : ∃m : ℕ, Module.finrank C L = 2^m :=
-    deg_pow_two R C L rc
+    deg_pow_two R C L
   obtain ⟨m,hm⟩ := pow_two
   have galois : IsGalois C L := IsGalois.tower_top_of_isGalois R C L
   have findim : FiniteDimensional C L := FiniteDimensional.right R C L
@@ -78,12 +78,13 @@ lemma trivial_degree (rc : ourRealClosedField R) (sq : i^2=-1)
         Module.finrank C F = (Module.finrank C L)/(Module.finrank F L) :=
         by rw [← Module.finrank_mul_finrank C F L, Nat.mul_div_cancel _ Module.finrank_pos]
         _ = (2^m)/(2^(m-1)) := by rw [hm, deg]
-        _ = 2 := by rw [Nat.pow_div (Nat.sub_le m 1) two_pos, Nat.sub_sub_self (Nat.one_le_iff_ne_zero.mpr h), pow_one]
-    exact no_quadratic_extension R C L i rc sq gen F deg_two
+        _ = 2 := by rw [Nat.pow_div (Nat.sub_le m 1) two_pos,
+        Nat.sub_sub_self (Nat.one_le_iff_ne_zero.mpr h), pow_one]
+    exact no_quadratic_extension R C L i sq gen F deg_two
   rw [hm, h0, pow_zero]
 
-theorem galois_extension (rc : ourRealClosedField R) (sq : i^2 = -1)
+theorem galois_extension [OurRealClosedField R] (sq : i^2 = -1)
     (gen : R⟮i⟯ = ⊤) [FiniteDimensional R L] [IsGalois R L] :
     Function.Bijective ψ := by
     exact Algebra.finrank_eq_one_iff_bijective_algebraMap.mp
-        (trivial_degree R C L i rc sq gen)
+        (trivial_degree R C L i sq gen)

@@ -19,7 +19,7 @@ local notation "G" => L ≃ₐ[R] L
 
 open scoped IntermediateField
 
-theorem sylow_argument (rc : ourRealClosedField R) [FiniteDimensional R L]
+theorem sylow_argument [OurRealClosedField R] [FiniteDimensional R L]
     [IsGalois R L] : ∃ n : ℕ, Module.finrank R L = 2^n := by
   have correct_autos : Nat.card G = Module.finrank R L :=
     IsGalois.card_aut_eq_finrank R L
@@ -54,7 +54,7 @@ theorem sylow_argument (rc : ourRealClosedField R) [FiniteDimensional R L]
         exact Module.finrank_div_finrank_cancel_right_of_nontrivial R E L
   have hm'' : m=1 := by
     rw [hm']
-    exact odd_degree_extensions rc (by simpa only [hm'] using hm)
+    exact odd_degree_extensions (by simpa only [hm'] using hm)
   have hcard' : Nat.card G = 2^n := by
     simpa [hm''] using hcard
   rw [←correct_autos]
