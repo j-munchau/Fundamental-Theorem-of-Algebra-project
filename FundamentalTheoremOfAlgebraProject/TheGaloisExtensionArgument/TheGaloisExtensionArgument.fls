@@ -2,7 +2,7 @@ PWD /Users/joe/Documents/Tex_Documents/Fundamental-Theorem-of-Algebra-project/Fu
 INPUT /usr/local/texlive/2024/texmf.cnf
 INPUT /usr/local/texlive/2024/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/joe/Documents/Tex_Documents/Fundamental-Theorem-of-Algebra-project/FundamentalTheoremOfAlgebraProject/TheGaloisExtensionArgument/TheGaloisExtensionArgument.tex
+INPUT TheGaloisExtensionArgument.tex
 OUTPUT TheGaloisExtensionArgument.log
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/article.cls

@@ -1,23 +1,19 @@
 \documentclass{article}
 
-% Language, fonts and typography
 \usepackage[british]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{microtype}
 
-% Mathematics
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
 
-% Layout
 \usepackage{fullpage}
 \usepackage{parskip}
 \usepackage{fancyhdr}
 \usepackage{enumitem}
 
-% Cross-references: hyperref and cleveref are loaded last, in this order
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage[capitalise,nameinlink]{cleveref}
@@ -29,7 +25,6 @@
   pdfauthor={Joe Lamond and Joshua Munchau},
 }
 
-% Page style
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{The Galois extension argument}
@@ -38,14 +33,7 @@
 \setlength{\headheight}{14pt}
 \setlength{\headsep}{10pt}
 
-% Theorems. With parskip, the default amsthm style spaces a theorem like an ordinary
-% paragraph, so it does not stand out. These values (added to parskip's paragraph gap) give
-% about 14pt of white space on each side, matching the space before a proof.
-\newtheoremstyle{spacedplain}{6pt}{3pt}{\itshape}{}{\bfseries}{.}{.5em}{}
-\newtheoremstyle{spacedremark}{6pt}{3pt}{\normalfont}{}{\bfseries}{.}{.5em}{}
-\theoremstyle{spacedplain}
 \newtheorem{theorem}{Theorem}
-\theoremstyle{spacedremark}
 \newtheorem*{remark}{Remark}
 
 \DeclareMathOperator{\Gal}{Gal}
@@ -54,22 +42,18 @@
 \begin{document}
 
 \section*{The Galois extension argument}
-
 This is Step~4 of the proof sketch in the \emph{Outline of formalisation}.
-
 \begin{theorem}\label{thm:galois-extension}
 Suppose $R$ is a real closed field, and $C$ is an extension of $R$ for which
 there is an element $i\in C$ such that $i^2=-1$ and $C=R(i)$. If $R\subseteq
 C\subseteq L$ is a tower of field extensions such that $R\subseteq L$ is finite
 Galois, then $L=C$.
 \end{theorem}
-
 The proof relies on two of the earlier steps of the proof sketch:
 \begin{enumerate}[label=\textbf{Step \arabic*.}, start=2, leftmargin=*]
 \item $C$ has no quadratic extension.
 \item Every finite Galois extension of $R$ has degree a power of $2$.
 \end{enumerate}
-
 \begin{proof}
 Since $R\subseteq C\subseteq L$ and $R\subseteq L$ is finite Galois, by standard
 results from Galois theory it follows that $C\subseteq L$ is finite Galois, and

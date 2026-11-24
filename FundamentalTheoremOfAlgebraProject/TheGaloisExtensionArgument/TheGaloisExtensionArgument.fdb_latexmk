@@ -1,6 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1795370915.16142 "/Users/joe/Documents/Tex_Documents/Fundamental-Theorem-of-Algebra-project/FundamentalTheoremOfAlgebraProject/TheGaloisExtensionArgument/TheGaloisExtensionArgument.tex" "TheGaloisExtensionArgument.pdf" "TheGaloisExtensionArgument" 1795370915.81527 0
-  "/Users/joe/Documents/Tex_Documents/Fundamental-Theorem-of-Algebra-project/FundamentalTheoremOfAlgebraProject/TheGaloisExtensionArgument/TheGaloisExtensionArgument.tex" 1795370914.95121 3168 740614b8d2cb447993e9297436210887 ""
+["pdflatex"] 1795538361.43937 "TheGaloisExtensionArgument.tex" "TheGaloisExtensionArgument.pdf" "TheGaloisExtensionArgument" 1795538362.1855 0
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1254269338 2375 baa924870cfb487815765f9094cf3728 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc" 1202520719 2840 216e6e45ad352e2456e1149f28885bee ""
@@ -114,9 +113,9 @@
   "/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1710952483.88847 5467645 128b85b7cde5f5edc5cb7f1dd7ff8736 ""
   "/usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1710952404 8221424 92f8b6afcf4312515f27bbf17b51370a ""
   "/usr/local/texlive/2024/texmf.cnf" 1710266656 577 e590dabc9e28c5b61546e15f63eebcdf ""
-  "TheGaloisExtensionArgument.aux" 1795370915.76181 364 905d77f31f40cbd7bbcd63975812dbce "pdflatex"
-  "TheGaloisExtensionArgument.out" 1795370915.61632 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
-  "TheGaloisExtensionArgument.tex" 1795370914.95121 3168 740614b8d2cb447993e9297436210887 ""
+  "TheGaloisExtensionArgument.aux" 1795538362.10379 364 905d77f31f40cbd7bbcd63975812dbce "pdflatex"
+  "TheGaloisExtensionArgument.out" 1795538361.92207 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "TheGaloisExtensionArgument.tex" 1795537895.9691 2561 89d5a53cd55d9f1328b4ad341b01aa0f ""
   (generated)
   "TheGaloisExtensionArgument.aux"
   "TheGaloisExtensionArgument.log"

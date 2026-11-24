@@ -1,17 +1,14 @@
 \documentclass{article}
 
-% Language, fonts and typography
 \usepackage[british]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{microtype}
 
-% Mathematics
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
 
-% Layout
 \usepackage{fullpage}
 \usepackage{parskip}
 \usepackage{fancyhdr}
@@ -20,11 +17,9 @@
 \usepackage{booktabs}
 \usepackage{needspace}
 
-% Lean code highlighting
 \usepackage{xcolor}
 \usepackage{soul}
 
-% Cross-references: hyperref and cleveref are loaded last, in this order
 \usepackage{hyperref}
 \usepackage[capitalise,nameinlink]{cleveref}
 
@@ -35,7 +30,6 @@
   pdfauthor={Joe Lamond and Joshua Munchau},
 }
 
-% Page style
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{Outline of formalisation}
@@ -44,18 +38,8 @@
 \setlength{\headheight}{14pt}
 \setlength{\headsep}{10pt}
 
-% Theorems. With parskip, the default amsthm style spaces a theorem like an ordinary
-% paragraph, so it does not stand out. These values (added to parskip's paragraph gap) give
-% about 14pt of white space on each side, matching the space before a proof.
-\newtheoremstyle{spacedplain}{6pt}{3pt}{\itshape}{}{\bfseries}{.}{.5em}{}
-\theoremstyle{spacedplain}
 \newtheorem{theorem}{Theorem}
 
-% Lean code.
-% \lean{...} typesets Lean code on a grey background. Lines may break after `.` and `_`, so
-% that long names such as Mathlib module paths can be split at natural points.
-% \leanmath{...} is for Lean code containing maths, e.g. \leanmath{$\top$}. It cannot be
-% split across lines.
 \colorlet{leanbg}{gray!15}
 
 \ExplSyntaxOn
@@ -84,7 +68,6 @@
   \endgroup
 }
 
-% Ragged-right table column, filling the remaining width
 \newcolumntype{L}{>{\raggedright\arraybackslash}X}
 
 \begin{document}

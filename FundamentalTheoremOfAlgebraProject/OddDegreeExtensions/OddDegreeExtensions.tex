@@ -1,0 +1,65 @@
+\documentclass{article}
+
+\usepackage[british]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\usepackage{fullpage}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[capitalise,nameinlink]{cleveref}
+
+\hypersetup{
+  colorlinks=true,
+  allcolors=blue!50!black,
+  pdftitle={Odd degree extensions},
+  pdfauthor={Joe Lamond and Joshua Munchau},
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Odd degree extensions}
+\fancyhead[R]{Joe Lamond and Joshua Munchau}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\headsep}{10pt}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem*{remark}{Remark}
+
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\Aut}{Aut}
+
+\begin{document}
+
+\section*{Odd degree extensions}
+This is Step~1 of the proof sketch in the \emph{Outline of formalisation}.
+\begin{theorem}\label{thm:odd-degree-extensions}
+Suppose $R$ is a real closed field, and $K/R$ is a finite extension of
+odd degree. Then $[K:R]=1$.
+\end{theorem}
+(For simplicity, we shall regard $R$ as a subfield of $K$, though in the Lean
+file the extension is treated as a ring homomorphism $R\to K$, and the goal is
+to show that it is bijective.)
+\begin{proof}
+Let $\alpha\in K$. Since $K$ is finite over $R$, the element $\alpha$
+is algebraic over $R$. Let $p\in R[t]$ be its minimal polynomial. By the tower
+law, $[R(\alpha):R]$ divides $[K:R]$. Since $[K:R]$ is odd, $[R(\alpha):R]$ is
+odd. Thus $p$ has odd degree.
+
+By the definition of real closed field, $p$ has a root, say $c\in R$. Thus $t-c$
+divides $p$, and since $p$ is monic and irreducible, we have $p=t-c$. Now 
+$p(\alpha)=0$, so that $\alpha=c\in R$. Since $\alpha$ was arbitrary,
+we conclude that $K=R$, hence $[K:R]=1$.
+\end{proof}
+
+\end{document}

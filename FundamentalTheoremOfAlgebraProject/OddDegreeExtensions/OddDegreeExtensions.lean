@@ -23,18 +23,17 @@ theorem odd_degree_extensions [OurRealClosedField R] [FiniteDimensional R K]
   · exact (φ).injective
   · intro α
     have degree_mul : (Module.finrank R K) =
-        (Module.finrank R R⟮α⟯) * (Module.finrank R⟮α⟯ K) := by
-      exact (Module.finrank_mul_finrank R R⟮α⟯ K).symm
+        (Module.finrank R R⟮α⟯) * (Module.finrank R⟮α⟯ K) :=
+      (Module.finrank_mul_finrank R R⟮α⟯ K).symm
     have divides : (Module.finrank R R⟮α⟯) ∣ (Module.finrank R K) := by
       use Module.finrank R⟮α⟯ K
-    have odd_degree : Odd (Module.finrank R R⟮α⟯) := by
-      exact hodd.of_dvd_nat divides
+    have odd_degree : Odd (Module.finrank R R⟮α⟯) :=
+      hodd.of_dvd_nat divides
+    have hα : IsIntegral R α := Algebra.IsIntegral.isIntegral α
     have odd_minpoly_degree : Odd (minpoly R α).natDegree := by
-      have hα : IsIntegral R α := Algebra.IsIntegral.isIntegral α
       rw [← IntermediateField.adjoin.finrank hα]
       exact odd_degree
-    have minpoly_root : ∃ c : R, (minpoly R α).IsRoot c := by
-      exact OurRealClosedField.oddDegreeRoot (minpoly R α) odd_minpoly_degree
+    have minpoly_root : ∃ c : R, (minpoly R α).IsRoot c :=
+      OurRealClosedField.oddDegreeRoot (minpoly R α) odd_minpoly_degree
     obtain ⟨c, hc⟩ := minpoly_root
-    have hα : IsIntegral R α := Algebra.IsIntegral.isIntegral α
     exact ⟨c, minpoly.root hα hc⟩
