@@ -21,8 +21,6 @@ open scoped IntermediateField
 
 theorem sylow_argument [OurRealClosedField R] [FiniteDimensional R L]
     [IsGalois R L] : ∃ n : ℕ, Module.finrank R L = 2^n := by
-  have correct_autos : Nat.card G = Module.finrank R L :=
-    IsGalois.card_aut_eq_finrank R L
   have decomp : ∃n m : ℕ, ∃P : Subgroup G,
       Odd m ∧ Nat.card G = 2^n*m  ∧ Nat.card P = 2^n := by
     have nonzero : Nat.card G ≠ 0 := by
@@ -41,6 +39,8 @@ theorem sylow_argument [OurRealClosedField R] [FiniteDimensional R L]
     exact IntermediateField.fixingSubgroup_fixedField P
   have galois_again : IsGalois E L := by
     infer_instance
+  have correct_autos : Nat.card G = Module.finrank R L :=
+    IsGalois.card_aut_eq_finrank R L
   have correct_autos_again : Nat.card P = Module.finrank E L := by
     rw [← fundamental]
     exact (Nat.card_congr (IntermediateField.fixingSubgroupEquiv E).toEquiv).trans
