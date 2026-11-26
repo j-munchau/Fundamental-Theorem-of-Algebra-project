@@ -29,3 +29,19 @@ instance : OurRealClosedField ℝ where
     · infer_instance
     · intro x hx
       exact ⟨√x, (Real.mul_self_sqrt hx).symm⟩
+
+theorem ourRealClosedField_iff_isRealClosedField
+    (R : Type*) [Field R] :
+    OurRealClosedField R ↔ IsRealClosed R := by
+  constructor
+  · intro hp
+    refine {
+    toIsSemireal := sorry
+    isSquare_or_isSquare_neg := sorry
+    exists_isRoot_of_odd_natDegree := hp.oddDegreeRoot _
+    }
+  · intro hq
+    refine {
+      oddDegreeRoot := sorry
+      nonNegSquare := sorry
+    }
