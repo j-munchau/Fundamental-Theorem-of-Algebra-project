@@ -2,6 +2,7 @@ import Mathlib.Algebra.Polynomial.Basic
 import Mathlib.Algebra.Polynomial.Monic
 import Mathlib.Algebra.Polynomial.SpecificDegree
 import Mathlib.FieldTheory.RatFunc.IntermediateField
+import Mathlib.FieldTheory.Minpoly.Basic
 import FundamentalTheoremOfAlgebraProject.TheoremStatement.OurRealClosedField
 
 open Polynomial
@@ -51,4 +52,7 @@ lemma i_isIntegral (sq : i ^ 2 = -1) : IsIntegral R i := by
   · exact polyI_monic
   · rw [← Polynomial.aeval_def]
     exact i_isRoot_polyI sq
+
+lemma minpoly_i [OurRealClosedField R] (sq : i ^ 2 = -1) : minpoly R i = polyI R:= by
+  exact ((minpoly.eq_iff_aeval_eq_zero polyI_irreducible polyI_monic).mpr (i_isRoot_polyI sq)).symm
 
