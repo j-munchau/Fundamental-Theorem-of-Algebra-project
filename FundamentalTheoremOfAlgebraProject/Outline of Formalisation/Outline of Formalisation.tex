@@ -88,14 +88,28 @@ It is possible to prove that (1) and (2) hold for $R=\mathbb R$, \emph{without} 
 Suppose $R$ is a real closed field, and $C$ is an extension of $R$ for which there is an element $i\in C$ such that $i^2=-1$ and $C=R(i)$. Then, $C$ is an algebraic closure of $R$.
 \end{theorem}
 
-To prove \cref{thm:general}, we will use a number of results from field theory and group theory, including the Fundamental Theorem of Galois Theory and the Sylow theorems. The argument which we will use is roughly the same as the one appearing in Chapter 6 of Lang's \emph{Algebra} (Revised Third Edition). Briefly, the proof runs as follows. To establish that $C$ is algebraically closed, it suffices to show that every finite extension of $C$ is trivial. We do this by establishing the following four facts:
+To prove \cref{thm:general}, we will use a number of results from field theory
+and group theory, including the Fundamental Theorem of Galois Theory and the
+Sylow theorems. The argument which we will use is roughly the same as the one
+appearing in Chapter 6 of Lang's \emph{Algebra} (Revised Third Edition).
+Briefly, the proof runs as follows. We first establish the following four facts:
 \begin{enumerate}[label=\textbf{Step \arabic*.}, leftmargin=*]
 \item $R$ has no nontrivial finite extensions of odd degree.
 \item $C$ has no quadratic extension.
 \item Every finite Galois extension of $R$ has degree a power of $2$. [This is the step that uses both the Fundamental Theorem of Galois Theory and the Sylow theorems.]
 \item Every finite Galois extension $E$ of $R$ such that $E\supseteq C$ satisfies $E=C$.
 \end{enumerate}
-Now, let $L/C$ be a finite extension. The extension $L/R$ is finite. By taking a normal closure, we obtain an extension $E/L$ such that $E/R$ is finite Galois. Now, $R\subseteq C\subseteq L\subseteq E$, hence $E\supseteq C$, so that $E=C$ by Step~4. Consequently, $L=C$.
+Once we have established Step~4, there are various ways to conclude that C is
+algebraically closed. Here is one argument. It is easy to see that C is a
+splitting field of the polynomial $x^2+1$ over $R$. We can use this to show that
+every nonzero $f\in R[x]$ splits over $C$: let $M$ be a splitting field of $f$
+over $C$. Then, $M$ is a splitting field of $(x^2+1)f$ over $R$. The extension 
+$R\subseteq M$ is finite Galois and contains $C$, so $M=C$. Hence $f$ splits
+over $C$. The following theorem now completes the proof.
+\begin{theorem}
+Suppose $F\subseteq K$ is an algebraic extension and every polynomial over $F$
+splits over $K$. Then, $K$ is an algebraic closure of $F$.
+\end{theorem}
 
 Once we have completed the proof of \cref{thm:general}, depending on the length of the Lean file, we might include further results about real closed fields $R$. One such result might be that if $f\in R[x]$ is a monic irreducible polynomial, then either $f$ is linear, or $f$ has the form $(x-a)^2+b^2$ for some $a,b\in R$. It follows that every monic polynomial in $R[x]$ can be factorised into linear and quadratic terms of this form.
 
