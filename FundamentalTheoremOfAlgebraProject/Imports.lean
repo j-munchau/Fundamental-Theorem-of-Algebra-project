@@ -12,4 +12,4 @@ project. Crucially, we ensure that the proof of the fundamental theorem of
 algebra already existing in Mathlib is not used.
 -/
 
-assert_not_imported Mathlib.Analysis.Complex.Polynomial.Basic
+assert_not_exists Complex.isAlgClosed Complex.exists_root
