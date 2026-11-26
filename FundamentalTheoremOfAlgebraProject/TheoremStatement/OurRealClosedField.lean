@@ -30,6 +30,11 @@ instance : OurRealClosedField ℝ where
     · intro x hx
       exact ⟨√x, (Real.mul_self_sqrt hx).symm⟩
 
+instance OurRealClosedField.charZero (R : Type*) [Field R] [OurRealClosedField R] :
+    CharZero R := by
+  obtain ⟨_, _, _⟩ := OurRealClosedField.nonNegSquare (R := R)
+  infer_instance
+
 theorem ourRealClosedField_iff_isRealClosedField
     (R : Type*) [Field R] :
     OurRealClosedField R ↔ IsRealClosed R := by
