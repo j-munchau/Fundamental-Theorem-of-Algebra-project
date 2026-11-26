@@ -36,5 +36,19 @@ lemma polyI_irreducible [OurRealClosedField R]
 
 open scoped IntermediateField
 
-variable {C : Type*} [Field C] [Algebra R C] [OurRealClosedField R]
+variable {C : Type*} [Field C] [Algebra R C]
+
+variable {i : C}
+
+lemma i_isRoot_polyI (sq : i ^ 2 = -1) : aeval i (polyI R) = 0 := by
+   unfold polyI
+   simp only [map_add, map_pow, aeval_X, map_one]
+   rw [sq, neg_add_cancel]
+
+lemma i_isIntegral (sq : i ^ 2 = -1) : IsIntegral R i := by
+  use polyI R
+  constructor
+  · exact polyI_monic
+  · rw [← Polynomial.aeval_def]
+    exact i_isRoot_polyI sq
 
