@@ -51,9 +51,8 @@ theorem ourRealClosedField_iff_isRealClosedField
       nonNegSquare := sorry
     }
 
-theorem square_ne_minus_one (R : Type*) [Field R] [OurRealClosedField R] (x : R) : x ^ 2 ≠ -1 := by
+lemma square_ne_minus_one (R : Type*) [Field R] [OurRealClosedField R] (x : R) : x ^ 2 ≠ -1 := by
   have h := OurRealClosedField.nonNegSquare (R := R)
   obtain ⟨_, _, _⟩ := h
   have h1 := (neg_lt_zero.mpr zero_lt_one).trans_le (sq_nonneg x)
   exact (ne_of_lt h1).symm
-
