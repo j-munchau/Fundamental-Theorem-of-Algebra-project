@@ -16,13 +16,13 @@ proof.
 open Polynomial
 
 class OurRealClosedField (R : Type*) [Field R] : Prop where
-  oddDegreeRoot : ∀ p : R[X], Odd p.natDegree -> ∃ a : R, p.IsRoot a
+  oddDegreeRoot : ∀ {p : R[X]}, Odd p.natDegree -> ∃ a : R, p.IsRoot a
   nonNegSquare : ∃ (_ : LinearOrder R),
-  IsStrictOrderedRing R ∧ ∀ x : R, 0 ≤ x -> IsSquare x
+  IsStrictOrderedRing R ∧ ∀ {x : R}, 0 ≤ x -> IsSquare x
 
 -- The reals are an instance of our definition of a real closed field
 instance : OurRealClosedField ℝ where
-  oddDegreeRoot _ hp := IsRealClosed.exists_isRoot_of_odd_natDegree hp
+  oddDegreeRoot hp := IsRealClosed.exists_isRoot_of_odd_natDegree hp
   nonNegSquare := by
     use inferInstance
     constructor
@@ -30,20 +30,20 @@ instance : OurRealClosedField ℝ where
     · intro x hx
       exact ⟨√x, (Real.mul_self_sqrt hx).symm⟩
 
-instance OurRealClosedField.charZero (R : Type*) [Field R] [OurRealClosedField R] :
+instance OurRealClosedField.charZero {R : Type*} [Field R] [OurRealClosedField R] :
     CharZero R := by
   obtain ⟨_, _, _⟩ := OurRealClosedField.nonNegSquare (R := R)
   infer_instance
 
 theorem ourRealClosedField_iff_isRealClosedField
-    (R : Type*) [Field R] :
+    {R : Type*} [Field R] :
     OurRealClosedField R ↔ IsRealClosed R := by
   constructor
   · intro hp
     refine {
     toIsSemireal := sorry
     isSquare_or_isSquare_neg := sorry
-    exists_isRoot_of_odd_natDegree := hp.oddDegreeRoot _
+    exists_isRoot_of_odd_natDegree := hp.oddDegreeRoot
     }
   · intro hq
     refine {
