@@ -18,6 +18,9 @@ lemma polyI_monic : (polyI R).Monic := by
   have h : (2 : ℕ) ≠ 0 := by decide
   exact monic_X_pow_add_C (1 : R) (n := 2) h
 
+lemma polyI_nonzero : polyI R ≠ 0 := by
+  exact polyI_monic.ne_zero
+
 lemma polyI_natDegree : (polyI R).natDegree = 2 := by
   unfold polyI
   simp
@@ -67,3 +70,10 @@ lemma complex_extension_finiteDimensional [OurRealClosedField R] (sq : i ^ 2 = -
     : FiniteDimensional R C := by
       sorry
 
+noncomputable def complexBasis [OurRealClosedField R] (sq : i ^ 2 = -1)
+    (gen : R⟮i⟯ = ⊤) : Module.Basis (Fin 2) R C := by
+  have e := IntermediateField.adjoinRootEquivAdjoin R (i_isIntegral sq)
+  rw [minpoly_i sq, gen] at e
+  have b : Module.Basis (Fin 2) R (AdjoinRoot (polyI R)) := by simpa only [polyI_natDegree] using
+    (AdjoinRoot.powerBasisAux polyI_nonzero)
+  exact b.map (e.trans IntermediateField.topEquiv).toLinearEquiv
