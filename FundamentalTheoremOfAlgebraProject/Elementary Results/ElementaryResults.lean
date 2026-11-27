@@ -3,6 +3,7 @@ import Mathlib.Algebra.Polynomial.Monic
 import Mathlib.Algebra.Polynomial.SpecificDegree
 import Mathlib.FieldTheory.RatFunc.IntermediateField
 import Mathlib.FieldTheory.Minpoly.Basic
+import Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic
 import FundamentalTheoremOfAlgebraProject.TheoremStatement.OurRealClosedField
 
 open Polynomial
@@ -55,4 +56,14 @@ lemma i_isIntegral (sq : i ^ 2 = -1) : IsIntegral R i := by
 
 lemma minpoly_i [OurRealClosedField R] (sq : i ^ 2 = -1) : minpoly R i = polyI R:= by
   exact ((minpoly.eq_iff_aeval_eq_zero polyI_irreducible polyI_monic).mpr (i_isRoot_polyI sq)).symm
+
+lemma complex_extension_finrank [OurRealClosedField R] (sq : i ^ 2 = -1) (gen : R⟮i⟯ = ⊤)
+    : Module.finrank R C = 2 := by
+  have h := IntermediateField.adjoin.finrank (i_isIntegral (R := R) sq)
+  rw [gen, IntermediateField.finrank_top', minpoly_i sq, polyI_natDegree] at h
+  exact h
+
+lemma complex_extension_finiteDimensional [OurRealClosedField R] (sq : i ^ 2 = -1) (gen : R⟮i⟯ = ⊤)
+    : FiniteDimensional R C := by
+      sorry
 
